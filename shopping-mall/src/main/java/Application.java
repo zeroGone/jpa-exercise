@@ -1,3 +1,7 @@
+import model.Member;
+import model.Order;
+import model.OrderItem;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -6,11 +10,21 @@ import javax.persistence.Persistence;
 public class Application {
     public static void main(String[] args) {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("jpabook");
-        EntityManager entityManager = entityManagerFactory.createEntityManager(); //엔티티 매니저 생성
-
-        EntityTransaction transaction = entityManager.getTransaction(); //트랜잭션 기능 획득
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
+            Member member = new Member();
+            entityManager.persist(member);
+
+            Order order = new Order();
+            entityManager.persist(order);
+
+            OrderItem orderItem = new OrderItem();
+            entityManager.persist(orderItem);
+
+            order.addOrderItem(orderItem);
+            order.setMember(member);
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -19,6 +33,13 @@ public class Application {
             entityManager.close();
         }
 
+        EntityManager entityManager2 = entityManagerFactory.createEntityManager();
+        Order order = entityManager2.find(Order.class, (long) 2);
+        System.out.println(order);
+        System.out.println(order.getMember());
+        System.out.println(order.getOrderItems().get(0));
+
+        entityManager2.close();
         entityManagerFactory.close();
     }
 }
