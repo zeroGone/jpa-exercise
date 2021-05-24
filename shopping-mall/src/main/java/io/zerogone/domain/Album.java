@@ -1,4 +1,4 @@
-package model;
+package io.zerogone.domain;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;

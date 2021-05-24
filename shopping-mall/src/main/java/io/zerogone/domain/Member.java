@@ -1,4 +1,4 @@
-package model;
+package io.zerogone.domain;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,14 +13,17 @@ public class Member extends BaseEntity {
 
     private String name;
 
-    private String city;
+    public Long getId() {
+        return id;
+    }
 
-    private String street;
-
-    private String zipcode;
+    public void setName(String name) {
+        this.name = name;
+    }
 
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>();
+
 
     public List<Order> getOrders() {
         return orders;
